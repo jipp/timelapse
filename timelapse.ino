@@ -1,6 +1,8 @@
+#include <Arduino.h>
 #include <Bounce2.h>
 #include <EEPROM.h>
 
+// 7 segments
 const int a = 0;
 const int b = 1;
 const int c = 2;
@@ -8,12 +10,19 @@ const int d = 3;
 const int e = 4;
 const int f = 5;
 const int g = 6;
+const int segment[]= {a, b, c, d, e, f, g};
+
+// button for program select
 const int button = 7;
-const int led = 8;
+
+// ASLR focus and shutter
 const int focus = 9;
 const int shutter = 10;
 
+// program
 const int address = 0;
+
+// length of 7 segment on
 const int ledOn = 5000;
 
 int buttonState = 0;
@@ -24,7 +33,8 @@ bool ledState = false;
 unsigned long ledShine = 0L;
 unsigned long shootTime = 0L;
 
-int programs[] = {1000, 2000, 3000, 5000, 8000, 13000, 21000, 34000, 55000, 89000};
+// program -> length
+int programs[] = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
 const int programLimit = sizeof(programs) / sizeof(programs[0]) - 1;
 
 Bounce debouncer = Bounce();
@@ -51,7 +61,6 @@ void setup() {
   pinMode(e, OUTPUT);
   pinMode(f, OUTPUT);
   pinMode(g, OUTPUT);
-  pinMode(led, OUTPUT);
   pinMode(focus, OUTPUT);
   pinMode(shutter, OUTPUT);
 
@@ -63,7 +72,8 @@ void setup() {
   program = EEPROM.read(address);
 
   sevenSegWrite(10);
-  digitalWrite(led, LOW);
+  digitalWrite(focus, LOW);
+  digitalWrite(shutter, LOW);
 }
 
 void loop() {
@@ -95,15 +105,18 @@ void loop() {
     sevenSegWrite(10);
   }
   if (millis() > shootTime + programs[program]) {
-    digitalWrite(led, HIGH);
+    digitalWrite(focus, HIGH);
+    delay(100);
+    digitalWrite(shutter, HIGH);
     delay(250);
-    digitalWrite(led, LOW);
+    digitalWrite(shutter, LOW);
+    digitalWrite(focus, LOW);
     shootTime = millis();
   }
 }
 
 void sevenSegWrite(byte digit) {
   for (byte i = 0; i < 7; i++) {
-    digitalWrite(i, 1 - sevenSeg[digit][i]);
+    digitalWrite(segment[i], 1 - sevenSeg[digit][i]);
   }
 }
