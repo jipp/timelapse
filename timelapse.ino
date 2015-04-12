@@ -1,31 +1,32 @@
 #include <Arduino.h>
+
 #include <Bounce2.h>
 #include <EEPROM.h>
 
 // 7 segments
-const int a = 0;
-const int b = 1;
-const int c = 2;
-const int d = 3;
-const int e = 4;
-const int f = 5;
-const int g = 6;
-const int segment[]= {a, b, c, d, e, f, g};
+const byte a = 0;
+const byte b = 1;
+const byte c = 2;
+const byte d = 3;
+const byte e = 4;
+const byte f = 5;
+const byte g = 6;
+const byte segment[] = {a, b, c, d, e, f, g};
 
 // button for program select
-const int button = 7;
+const byte button = 7;
 
 // ASLR focus and shutter
-const int focus = 9;
-const int shutter = 10;
+const byte focus = 9;
+const byte shutter = 10;
 
 // program
-const int address = 0;
+const byte address = 0;
 
-// length of 7 segment on
-const int ledOn = 5000;
+// duration of 7 segment light on
+const byte ledOn = 5;
 
-int buttonState = 0;
+bool buttonState = false;
 byte program = 0;
 bool pressed = false;
 bool ledState = false;
@@ -34,12 +35,12 @@ unsigned long ledShine = 0L;
 unsigned long shootTime = 0L;
 
 // program -> length
-int programs[] = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
-const int programLimit = sizeof(programs) / sizeof(programs[0]) - 1;
+byte programs[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+const byte programLimit = sizeof(programs) / sizeof(programs[0]) - 1;
 
 Bounce debouncer = Bounce();
 
-byte sevenSeg[11][7] = {
+bool sevenSeg[][7] = {
   { 0, 1, 1, 0, 0, 0, 0 }, // = 1
   { 1, 1, 0, 1, 1, 0, 1 }, // = 2
   { 1, 1, 1, 1, 0, 0, 1 }, // = 3
@@ -80,39 +81,42 @@ void loop() {
   debouncer.update();
   buttonState = debouncer.read();
 
-  if (ledState && buttonState == HIGH && !pressed) {
-    program ++;
-    if (program > programLimit) {
+  if (ledState && buttonState && !pressed) {
+    if (program++ > programLimit) {
       program = 0;
     }
     pressed = true;
     EEPROM.write(address, program);
-    sevenSegWrite(program);
     ledShine = millis();
+    sevenSegWrite(program);
   }
-  if (ledState && pressed && buttonState == LOW) {
+  if (ledState && pressed && !buttonState) {
     pressed = false;
   }
-  if (!ledState && !pressed && buttonState == HIGH) {
+  if (!ledState && !pressed && buttonState) {
     ledState = true;
     pressed = true;
-    sevenSegWrite(program);
     ledShine = millis();
+    sevenSegWrite(program);
   }
-  if (ledState && (millis() > ledShine + ledOn)) {
+  if (ledState && (millis() > ledShine + ledOn * 1000)) {
     ledState = false;
     pressed = false;
     sevenSegWrite(10);
   }
-  if (millis() > shootTime + programs[program]) {
+  if (millis() > shootTime + programs[program] * 1000) {
+    shootTime = millis();
+    shoot();
+  }
+}
+
+void shoot() {
     digitalWrite(focus, HIGH);
     delay(100);
     digitalWrite(shutter, HIGH);
     delay(250);
     digitalWrite(shutter, LOW);
     digitalWrite(focus, LOW);
-    shootTime = millis();
-  }
 }
 
 void sevenSegWrite(byte digit) {
