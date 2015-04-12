@@ -1,8 +1,17 @@
 #include <Bounce2.h>
 #include <EEPROM.h>
 
+const int a = 0;
+const int b = 1;
+const int c = 2;
+const int d = 3;
+const int e = 4;
+const int f = 5;
+const int g = 6;
 const int button = 7;
 const int led = 8;
+const int focus = 9;
+const int shutter = 10;
 
 const int address = 0;
 const int ledOn = 5000;
@@ -35,14 +44,16 @@ byte sevenSeg[11][7] = {
 };
 
 void setup() {
-  pinMode(0, OUTPUT);
-  pinMode(1, OUTPUT);
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(6, OUTPUT);
+  pinMode(a, OUTPUT);
+  pinMode(b, OUTPUT);
+  pinMode(c, OUTPUT);
+  pinMode(d, OUTPUT);
+  pinMode(e, OUTPUT);
+  pinMode(f, OUTPUT);
+  pinMode(g, OUTPUT);
   pinMode(led, OUTPUT);
+  pinMode(focus, OUTPUT);
+  pinMode(shutter, OUTPUT);
 
   pinMode(button, INPUT);
 
