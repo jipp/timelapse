@@ -1,58 +1,42 @@
 #include <Arduino.h>
 
-#include <Bounce2.h>
 #include <EEPROM.h>
 
-// 7 segments
-const byte a = 0;
-const byte b = 1;
-const byte c = 2;
-const byte d = 3;
-const byte e = 4;
-const byte f = 5;
-const byte g = 6;
-const byte segment[] = {a, b, c, d, e, f, g};
+// 7 segments -> pin#
+#define a 0
+#define b 1
+#define c 2
+#define d 3
+#define e 4
+#define f 5
+#define g 6
 
 // button for program select
-const byte button = 7;
+#define button 7
 
 // ASLR focus and shutter
-const byte focus = 9;
-const byte shutter = 10;
+#define focus 8
+#define shutter 9
 
-// program
+// store program in EEPROM
 const byte address = 0;
 
 // duration of 7 segment light on
 const byte ledOn = 5;
 
+// initialize variable
 bool buttonState = false;
 byte program = 0;
 bool pressed = false;
 bool ledState = false;
-
 unsigned long ledShine = 0L;
 unsigned long shootTime = 0L;
 
-// program -> length
+// program# -> length
 byte programs[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+// # of programs
 const byte programLimit = sizeof(programs) / sizeof(programs[0]) - 1;
-
-Bounce debouncer = Bounce();
-
-bool sevenSeg[][7] = {
-  { 0, 1, 1, 0, 0, 0, 0 }, // = 1
-  { 1, 1, 0, 1, 1, 0, 1 }, // = 2
-  { 1, 1, 1, 1, 0, 0, 1 }, // = 3
-  { 0, 1, 1, 0, 0, 1, 1 }, // = 4
-  { 1, 0, 1, 1, 0, 1, 1 }, // = 5
-  { 1, 0, 1, 1, 1, 1, 1 }, // = 6
-  { 1, 1, 1, 0, 0, 0, 0 }, // = 7
-  { 1, 1, 1, 1, 1, 1, 1 }, // = 8
-  { 1, 1, 1, 0, 0, 1, 1 }, // = 9
-  { 1, 1, 1, 1, 1, 1, 0 }, // = 0
-  { 0, 0, 0, 0, 0, 0, 0 }  // = off
-};
 
 void setup() {
   pinMode(a, OUTPUT);
@@ -62,41 +46,40 @@ void setup() {
   pinMode(e, OUTPUT);
   pinMode(f, OUTPUT);
   pinMode(g, OUTPUT);
+
   pinMode(focus, OUTPUT);
   pinMode(shutter, OUTPUT);
 
   pinMode(button, INPUT);
 
-  debouncer.attach(button);
-  debouncer.interval(5);
-
   program = EEPROM.read(address);
 
+  // clean display
   sevenSegWrite(10);
   digitalWrite(focus, LOW);
   digitalWrite(shutter, LOW);
 }
 
 void loop() {
-  debouncer.update();
-  buttonState = debouncer.read();
+  buttonState = digitalRead(button);
 
   if (ledState && buttonState && !pressed) {
     if (program++ > programLimit) {
       program = 0;
     }
+    ledShine = millis();
     pressed = true;
     EEPROM.write(address, program);
-    ledShine = millis();
     sevenSegWrite(program);
+    delay(50);
   }
   if (ledState && pressed && !buttonState) {
     pressed = false;
   }
   if (!ledState && !pressed && buttonState) {
+    ledShine = millis();
     ledState = true;
     pressed = true;
-    ledShine = millis();
     sevenSegWrite(program);
   }
   if (ledState && (millis() > ledShine + ledOn * 1000)) {
@@ -111,16 +94,115 @@ void loop() {
 }
 
 void shoot() {
-    digitalWrite(focus, HIGH);
-    delay(100);
-    digitalWrite(shutter, HIGH);
-    delay(250);
-    digitalWrite(shutter, LOW);
-    digitalWrite(focus, LOW);
+  digitalWrite(focus, HIGH);
+  delay(100);
+  digitalWrite(shutter, HIGH);
+  delay(250);
+  digitalWrite(shutter, LOW);
+  digitalWrite(focus, LOW);
 }
 
+// either high memory or more program lines - you pay for one with the other
 void sevenSegWrite(byte digit) {
-  for (byte i = 0; i < 7; i++) {
-    digitalWrite(segment[i], 1 - sevenSeg[digit][i]);
+  switch (digit) {
+    case 1:
+      digitalWrite(a, true);
+      digitalWrite(b, false);
+      digitalWrite(c, false);
+      digitalWrite(d, true);
+      digitalWrite(e, true);
+      digitalWrite(f, true);
+      digitalWrite(g, true);
+      break;
+    case 2:
+      digitalWrite(a, false);
+      digitalWrite(b, false);
+      digitalWrite(c, true);
+      digitalWrite(d, false);
+      digitalWrite(e, false);
+      digitalWrite(f, true);
+      digitalWrite(g, false);
+      break;
+    case 3:
+      digitalWrite(a, true);
+      digitalWrite(b, true);
+      digitalWrite(c, true);
+      digitalWrite(d, true);
+      digitalWrite(e, false);
+      digitalWrite(f, false);
+      digitalWrite(g, true);
+      break;
+    case 4:
+      digitalWrite(a, true);
+      digitalWrite(b, false);
+      digitalWrite(c, false);
+      digitalWrite(d, true);
+      digitalWrite(e, true);
+      digitalWrite(f, false);
+      digitalWrite(g, false);
+      break;
+    case 5:
+      digitalWrite(a, false);
+      digitalWrite(b, true);
+      digitalWrite(c, false);
+      digitalWrite(d, false);
+      digitalWrite(e, true);
+      digitalWrite(f, false);
+      digitalWrite(g, false);
+      break;
+    case 6:
+      digitalWrite(a, false);
+      digitalWrite(b, true);
+      digitalWrite(c, false);
+      digitalWrite(d, false);
+      digitalWrite(e, false);
+      digitalWrite(f, false);
+      digitalWrite(g, false);
+      break;
+    case 7:
+      digitalWrite(a, false);
+      digitalWrite(b, false);
+      digitalWrite(c, false);
+      digitalWrite(d, true);
+      digitalWrite(e, true);
+      digitalWrite(f, true);
+      digitalWrite(g, true);
+      break;
+    case 8:
+      digitalWrite(a, false);
+      digitalWrite(b, false);
+      digitalWrite(c, false);
+      digitalWrite(d, false);
+      digitalWrite(e, false);
+      digitalWrite(f, false);
+      digitalWrite(g, false);
+      break;
+    case 9:
+      digitalWrite(a, false);
+      digitalWrite(b, false);
+      digitalWrite(c, false);
+      digitalWrite(d, true);
+      digitalWrite(e, true);
+      digitalWrite(f, false);
+      digitalWrite(g, false);
+      break;
+    case 0:
+      digitalWrite(a, false);
+      digitalWrite(b, false);
+      digitalWrite(c, false);
+      digitalWrite(d, false);
+      digitalWrite(e, false);
+      digitalWrite(f, false);
+      digitalWrite(g, true);
+      break;
+    default:
+      digitalWrite(a, true);
+      digitalWrite(b, true);
+      digitalWrite(c, true);
+      digitalWrite(d, true);
+      digitalWrite(e, true);
+      digitalWrite(f, true);
+      digitalWrite(g, true);
+      break;
   }
 }
