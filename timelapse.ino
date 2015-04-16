@@ -64,14 +64,14 @@ void loop() {
   buttonState = digitalRead(button);
 
   if (ledState && buttonState && !pressed) {
-    if (program++ > programLimit) {
+    if (program++ >= programLimit) {
       program = 0;
     }
     ledShine = millis();
     pressed = true;
     EEPROM.write(address, program);
     sevenSegWrite(program);
-    delay(50);
+    delay(100);
   }
   if (ledState && pressed && !buttonState) {
     pressed = false;
@@ -124,13 +124,13 @@ void sevenSegWrite(byte digit) {
       digitalWrite(g, false);
       break;
     case 3:
-      digitalWrite(a, true);
+      digitalWrite(a, false);
       digitalWrite(b, true);
       digitalWrite(c, true);
-      digitalWrite(d, true);
+      digitalWrite(d, false);
       digitalWrite(e, false);
       digitalWrite(f, false);
-      digitalWrite(g, true);
+      digitalWrite(g, false);
       break;
     case 4:
       digitalWrite(a, true);
