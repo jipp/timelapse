@@ -125,11 +125,11 @@ void sevenSegWrite(byte digit) {
       break;
     case 3:
       digitalWrite(a, false);
-      digitalWrite(b, true);
-      digitalWrite(c, true);
+      digitalWrite(b, false);
+      digitalWrite(c, false);
       digitalWrite(d, false);
-      digitalWrite(e, false);
-      digitalWrite(f, false);
+      digitalWrite(e, true);
+      digitalWrite(f, true);
       digitalWrite(g, false);
       break;
     case 4:
