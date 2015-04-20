@@ -1838,20 +1838,20 @@ Source: SA56-11EWA(Ver1189471036.pdf</description>
 <net name="N$6" class="0">
 <segment>
 <pinref part="U1" gate="A" pin="PA1"/>
-<wire x1="40.64" y1="68.58" x2="33.02" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="33.02" y1="68.58" x2="33.02" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="33.02" y1="93.98" x2="96.52" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="96.52" y1="93.98" x2="96.52" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="68.58" x2="35.56" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="68.58" x2="35.56" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="91.44" x2="96.52" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="96.52" y1="91.44" x2="96.52" y2="71.12" width="0.1524" layer="91"/>
 <wire x1="96.52" y1="71.12" x2="99.06" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="LED1" gate="G$1" pin="C"/>
 </segment>
 </net>
 <net name="N$7" class="0">
 <segment>
-<wire x1="40.64" y1="71.12" x2="35.56" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="71.12" x2="35.56" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="91.44" x2="93.98" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="93.98" y1="91.44" x2="93.98" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="71.12" x2="38.1" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="71.12" x2="38.1" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="88.9" x2="93.98" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="93.98" y1="88.9" x2="93.98" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="93.98" y1="68.58" x2="99.06" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="LED1" gate="G$1" pin="D"/>
 <pinref part="U1" gate="A" pin="PA0"/>
@@ -1867,17 +1867,17 @@ Source: SA56-11EWA(Ver1189471036.pdf</description>
 <net name="N$9" class="0">
 <segment>
 <pinref part="U1" gate="A" pin="VCC"/>
-<wire x1="40.64" y1="76.2" x2="38.1" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="76.2" x2="38.1" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="88.9" x2="139.7" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="139.7" y1="88.9" x2="139.7" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="76.2" x2="33.02" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="76.2" x2="33.02" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="93.98" x2="139.7" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="93.98" x2="139.7" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="R4" gate="G$1" pin="2"/>
 <wire x1="139.7" y1="76.2" x2="134.62" y2="76.2" width="0.1524" layer="91"/>
 <junction x="139.7" y="76.2"/>
 <wire x1="139.7" y1="22.86" x2="139.7" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="76.2" x2="27.94" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="76.2" x2="27.94" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="A" pin="2"/>
-<junction x="38.1" y="76.2"/>
+<junction x="33.02" y="76.2"/>
 <pinref part="U$1" gate="S$1" pin="P1"/>
 <wire x1="96.52" y1="22.86" x2="139.7" y2="22.86" width="0.1524" layer="91"/>
 </segment>
@@ -1887,7 +1887,6 @@ Source: SA56-11EWA(Ver1189471036.pdf</description>
 <pinref part="U1" gate="A" pin="PD5"/>
 <wire x1="76.2" y1="63.5" x2="83.82" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="83.82" y1="63.5" x2="83.82" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="83.82" y1="22.86" x2="86.36" y2="22.86" width="0.1524" layer="91"/>
 <wire x1="86.36" y1="22.86" x2="83.82" y2="22.86" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="2"/>
 <pinref part="U$1" gate="S$1" pin="S1"/>
