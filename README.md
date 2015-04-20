@@ -15,4 +15,4 @@ EAGLE files included:
 * Board layout
 
 ## Info
-This was developed 1st for a Nikon, but as a 3mm Jack is used to connect the camera any camera adapter should work.
+This was developed 1st for a Nikon, but as a 2.5mm Jack is used to connect the camera any camera adapter should work.
