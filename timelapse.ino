@@ -1,5 +1,4 @@
 #include <Arduino.h>
-
 #include <EEPROM.h>
 
 // 7 segments -> pin#
@@ -14,7 +13,7 @@
 // button for program select
 #define button 7
 
-// ASLR focus and shutter
+// DSLR focus and shutter
 #define focus 8
 #define shutter 9
 
